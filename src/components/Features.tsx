@@ -18,7 +18,7 @@ const Features: React.FC = () => {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-text-primary mb-6">
             Why Learn with{' '}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              LingoSpark
+              LinguaLearn
             </span>
           </h2>
           <p className="text-lg sm:text-xl text-text-secondary max-w-3xl mx-auto">

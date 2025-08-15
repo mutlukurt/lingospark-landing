@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   }, []);
 
   const navItems = [
-    { label: 'Why LingoSpark', href: '#features' },
+    { label: 'Why LinguaLearn', href: '#features' },
     { label: 'Dictionary', href: '#dictionary' },
     { label: 'Games', href: '#games' },
     { label: 'Courses', href: '#courses' },
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
               <span className="text-white font-bold text-sm">LS</span>
             </div>
             <span className="text-xl font-heading font-bold text-text-primary">
-              LingoSpark
+              LinguaLearn
             </span>
           </motion.div>
 

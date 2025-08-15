@@ -1,6 +1,6 @@
-# LingoSpark Landing - English Learning Platform
+# LinguaLearn Landing - English Learning Platform
 
-A modern, interactive English learning platform built with React, TypeScript, and Tailwind CSS. LingoSpark offers a comprehensive learning experience through games, personalized dictionaries, progress tracking, and structured courses.
+A modern, interactive English learning platform built with React, TypeScript, and Tailwind CSS. LinguaLearn offers a comprehensive learning experience through games, personalized dictionaries, progress tracking, and structured courses.
 
 ## 🚀 Features
 
@@ -162,7 +162,7 @@ src/
 This project is created for educational purposes. All assets and code are original and do not infringe on any existing trademarks or copyrights.
 
 ### Asset Attribution
-- **Mascot Design**: Original blue owl character created specifically for LingoSpark
+- **Mascot Design**: Original blue owl character created specifically for LinguaLearn
 - **Icons**: Lucide React (MIT License)
 - **Fonts**: Google Fonts (Open Font License)
 - **3D Elements**: Custom low-poly shapes using React Three Fiber

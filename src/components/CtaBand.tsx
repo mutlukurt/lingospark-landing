@@ -56,7 +56,7 @@ const CtaBand: React.FC = () => {
             viewport={{ once: true }}
             className="text-lg sm:text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed"
           >
-            Join thousands of learners who have already improved their English with LingoSpark. 
+            Join thousands of learners who have already improved their English with LinguaLearn. 
             Start your journey today with our free trial and experience the difference.
           </motion.p>
 

@@ -16,7 +16,7 @@ const Loading: React.FC = () => {
             <span className="text-white font-bold text-xl">LS</span>
           </div>
           <h1 className="text-2xl font-heading font-bold text-text-primary">
-            LingoSpark
+            LinguaLearn
           </h1>
         </motion.div>
 

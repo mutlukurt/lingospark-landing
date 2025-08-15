@@ -92,7 +92,7 @@ const Footer: React.FC = () => {
                     <span className="text-white font-bold text-lg">LS</span>
                   </div>
                   <span className="text-2xl font-heading font-bold">
-                    LingoSpark
+                    LinguaLearn
                   </span>
                 </div>
 
@@ -179,7 +179,7 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="text-gray-300 text-sm"
             >
-              © 2024 LingoSpark. All rights reserved.
+              © 2024 LinguaLearn. All rights reserved.
             </motion.div>
 
             {/* Language Selector */}

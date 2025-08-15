@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Fun Way
               </span>{' '}
-              with LingoSpark
+              with LinguaLearn
             </motion.h1>
             
             <motion.p
