@@ -1,4 +1,4 @@
-# LingoSpark - English Learning Platform
+# LingoSpark Landing - English Learning Platform
 
 A modern, interactive English learning platform built with React, TypeScript, and Tailwind CSS. LingoSpark offers a comprehensive learning experience through games, personalized dictionaries, progress tracking, and structured courses.
 
@@ -29,7 +29,7 @@ A modern, interactive English learning platform built with React, TypeScript, an
 
 1. **Navigate to project directory**
    ```bash
-   cd english-school-page
+   cd lingospark-landing
    ```
 
 2. **Install dependencies**
