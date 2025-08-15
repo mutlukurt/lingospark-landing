@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: radial-gradient(ellipse at top, #F7F9FF 0%, #FFF8F2 100%);
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/80 backdrop-blur-sm hover:bg-white text-text-primary font-medium px-6 py-3 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50;
+  }
+  
+  .card-glass {
+    @apply bg-white/60 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+  
+  .floating-element {
+    @apply animate-float;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-element,
+  .animate-float,
+  .animate-float-delayed,
+  .animate-pulse-glow {
+    animation: none;
+  }
+  
+  .transform,
+  .hover\\:scale-105 {
+    transform: none !important;
+  }
+}
