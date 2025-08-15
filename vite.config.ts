@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/lingospark-landing/',
+  base: '/lingualearn-landing/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
