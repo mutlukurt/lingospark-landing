@@ -179,7 +179,7 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="text-gray-300 text-sm"
             >
-              © 2024 LinguaLearn. All rights reserved.
+              © 2025 Mutlu Kurt. MIT License.
             </motion.div>
 
             {/* Language Selector */}
