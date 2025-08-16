@@ -104,12 +104,14 @@ const FloatingBits: React.FC = () => {
   // Optimize animations based on device and user preferences
   const animationConfig = useMemo(() => {
     if (prefersReducedMotion) {
-      return {
-        shouldAnimate: false,
-        showStatic: true,
-        count: 4,
-        opacity: 'opacity-20'
-      };
+              return {
+          shouldAnimate: false,
+          showStatic: true,
+          count: 4,
+          opacity: 'opacity-20',
+          duration: 0,
+          movement: { y: 0, x: 0, rotate: 0, scale: 0 }
+        };
     }
     
     switch (deviceType) {

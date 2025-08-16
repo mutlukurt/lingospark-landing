@@ -51,29 +51,46 @@ const Header: React.FC = () => {
         const isMobile = window.innerWidth < 1024;
         const headerHeight = isMobile ? 70 : 80;
         
-        // Universal method that works on all devices
+        // Universal method that works on all devices and DevTools
         const elementRect = element.getBoundingClientRect();
         const absoluteElementTop = elementRect.top + window.pageYOffset;
         const scrollToPosition = Math.max(0, absoluteElementTop - headerHeight);
         
-        // Use the most compatible scroll method
-        if ('scrollTo' in window) {
+        // Try multiple scroll methods for maximum compatibility
+        try {
+          // First try modern smooth scroll
+          window.scrollTo({
+            top: scrollToPosition,
+            behavior: 'smooth'
+          });
+        } catch (error) {
           try {
-            window.scrollTo({
-              top: scrollToPosition,
-              behavior: 'smooth'
-            });
-          } catch (error) {
-            // Fallback for browsers that don't support smooth behavior
+            // Fallback to basic scrollTo
             window.scrollTo(0, scrollToPosition);
+          } catch (error2) {
+            try {
+              // Fallback to element scrollIntoView
+              element.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            } catch (error3) {
+              // Last resort: direct DOM manipulation
+              document.documentElement.scrollTop = scrollToPosition;
+              document.body.scrollTop = scrollToPosition;
+            }
           }
-        } else {
-          // Very old browser fallback
-          document.documentElement.scrollTop = scrollToPosition;
-          document.body.scrollTop = scrollToPosition;
         }
+        
+        // Additional debugging for DevTools
+        if (import.meta.env.DEV) {
+          console.log('Scrolling to:', href, 'Position:', scrollToPosition);
+        }
+      } else {
+        console.warn('Element not found:', href);
       }
-    }, isMobileOrTablet ? 300 : 100); // Longer delay for mobile/tablet to ensure menu is closed
+    }, isMobileOrTablet ? 200 : 100); // Reduced delay for better responsiveness
   };
 
   return (
@@ -193,11 +210,21 @@ const Header: React.FC = () => {
                       e.stopPropagation();
                       scrollToSection(item.href);
                     }}
+                    onTouchStart={(e) => {
+                      // Improve touch responsiveness
+                      e.preventDefault();
+                    }}
                     onTouchEnd={(e) => {
                       e.preventDefault();
                       scrollToSection(item.href);
                     }}
-                    className="text-left text-text-primary hover:text-primary transition-colors duration-200 font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:bg-primary/5 border-l-4 border-transparent hover:border-primary text-base sm:text-lg touch-manipulation"
+                    className="text-left text-text-primary hover:text-primary transition-colors duration-200 font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:bg-primary/5 border-l-4 border-transparent hover:border-primary text-base sm:text-lg touch-manipulation cursor-pointer select-none"
+                    style={{ 
+                      WebkitTapHighlightColor: 'transparent',
+                      WebkitTouchCallout: 'none',
+                      WebkitUserSelect: 'none',
+                      userSelect: 'none'
+                    }}
                   >
                     {item.label}
                   </motion.button>

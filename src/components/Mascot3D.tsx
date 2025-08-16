@@ -81,9 +81,9 @@ const Mascot3D: React.FC = () => {
       deviceType,
       // Optimize settings per device
       autoRotateSpeed: deviceType === 'mobile' ? 0.1 : deviceType === 'tablet' ? 0.15 : 0.3,
-      dpr: deviceType === 'mobile' ? [0.5, 1] : deviceType === 'tablet' ? [1, 1.5] : [1, 2],
+      dpr: (deviceType === 'mobile' ? [0.5, 1] : deviceType === 'tablet' ? [1, 1.5] : [1, 2]) as [number, number],
       performanceMin: deviceType === 'mobile' ? 0.1 : deviceType === 'tablet' ? 0.2 : 0.5,
-      frameloop: deviceType === 'mobile' ? 'demand' : deviceType === 'tablet' ? 'demand' : 'always',
+      frameloop: (deviceType === 'mobile' ? 'demand' : deviceType === 'tablet' ? 'demand' : 'always') as 'always' | 'demand' | 'never',
       shapesCount: deviceType === 'mobile' ? 2 : deviceType === 'tablet' ? 3 : 5,
       floatIntensity: deviceType === 'mobile' ? 0.2 : deviceType === 'tablet' ? 0.3 : 0.5,
       rotationIntensity: deviceType === 'mobile' ? 0.1 : deviceType === 'tablet' ? 0.2 : 0.5

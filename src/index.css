@@ -109,29 +109,33 @@
 
 /* Mobile & Tablet Performance Optimizations */
 @media (max-width: 1023px) {
-  /* Disable most animations on mobile phones and tablets for better performance */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+  /* Optimize animations for mobile phones and tablets for better performance */
   
-  /* Keep only essential animations with minimal duration */
+  /* Keep essential UI interactions working */
   .mobile-menu,
   .mobile-menu *,
+  button,
   button:hover,
-  button:active {
-    transition-duration: 0.15s !important;
-    animation-duration: 0.15s !important;
+  button:active,
+  [role="button"],
+  .btn-primary,
+  .btn-secondary {
+    transition-duration: 0.2s !important;
+    animation-duration: 0.2s !important;
   }
   
-  /* Disable complex transforms */
-  [class*="motion-"],
-  [class*="animate-"] {
-    transform: none !important;
-    animation: none !important;
+  /* Reduce heavy background animations only */
+  .floating-element,
+  .animate-float,
+  .animate-float-delayed,
+  .animate-pulse-glow {
+    animation-duration: 3s !important;
+    animation-iteration-count: infinite !important;
+  }
+  
+  /* Reduce complex 3D transforms but keep basic ones */
+  [class*="motion-"]:not(.mobile-menu):not(.mobile-menu *) {
+    animation-duration: 0.3s !important;
   }
 }
 
