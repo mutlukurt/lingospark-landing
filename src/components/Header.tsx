@@ -29,18 +29,28 @@ const Header: React.FC = () => {
   }, []);
 
   const navItems = [
-    { label: 'Why LinguaLearn', href: '#features' },
+    { label: 'Features', href: '#features' },
     { label: 'Dictionary', href: '#dictionary' },
+    { label: 'Calendar', href: '#calendar' },
     { label: 'Games', href: '#games' },
     { label: 'Courses', href: '#courses' },
-    { label: 'Pricing', href: '#pricing' },
   ];
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Calculate header height for proper offset
+      const headerHeight = 80; // Fixed header height
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
+    
+    // Close mobile menu after navigation
     setIsMenuOpen(false);
   };
 
@@ -60,7 +70,10 @@ const Header: React.FC = () => {
           <motion.div
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-2 cursor-pointer"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              setIsMenuOpen(false);
+            }}
           >
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">LS</span>
@@ -118,16 +131,28 @@ const Header: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="lg:hidden mobile-menu mobile-menu-backdrop shadow-xl border-b border-white/20"
-          >
+          <>
+            {/* Background Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            
+            {/* Menu Content */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="lg:hidden mobile-menu mobile-menu-backdrop shadow-xl border-b border-white/20"
+            >
             <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
               <div className="flex flex-col space-y-3 sm:space-y-5">
                 {navItems.map((item, index) => (
@@ -157,7 +182,8 @@ const Header: React.FC = () => {
                 </motion.div>
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.header>
