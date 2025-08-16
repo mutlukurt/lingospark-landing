@@ -9,6 +9,18 @@
     scroll-padding-top: 80px; /* Account for fixed header */
   }
   
+  /* Mobile-specific scroll improvements */
+  @media (max-width: 1023px) {
+    html {
+      scroll-padding-top: 70px; /* Smaller header on mobile */
+      -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+    }
+    
+    body {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  
   body {
     font-family: 'Inter', system-ui, sans-serif;
     background: radial-gradient(ellipse at top, #F7F9FF 0%, #FFF8F2 100%);

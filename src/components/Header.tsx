@@ -37,21 +37,40 @@ const Header: React.FC = () => {
   ];
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      // Calculate header height for proper offset
-      const headerHeight = 80; // Fixed header height
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - headerHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-    
-    // Close mobile menu after navigation
+    // Close mobile menu first for better UX
     setIsMenuOpen(false);
+    
+    // Small delay to let menu close animation complete
+    setTimeout(() => {
+      const element = document.querySelector(href);
+      
+      if (element) {
+        const isMobile = window.innerWidth < 1024;
+        const headerHeight = isMobile ? 70 : 80;
+        
+        // Universal method that works on all devices
+        const elementRect = element.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.pageYOffset;
+        const scrollToPosition = Math.max(0, absoluteElementTop - headerHeight);
+        
+        // Use the most compatible scroll method
+        if ('scrollTo' in window) {
+          try {
+            window.scrollTo({
+              top: scrollToPosition,
+              behavior: 'smooth'
+            });
+          } catch (error) {
+            // Fallback for browsers that don't support smooth behavior
+            window.scrollTo(0, scrollToPosition);
+          }
+        } else {
+          // Very old browser fallback
+          document.documentElement.scrollTop = scrollToPosition;
+          document.body.scrollTop = scrollToPosition;
+        }
+      }
+    }, isMobile ? 300 : 100); // Longer delay for mobile to ensure menu is closed
   };
 
   return (
@@ -88,7 +107,11 @@ const Header: React.FC = () => {
             {navItems.map((item) => (
               <button
                 key={item.label}
-                onClick={() => scrollToSection(item.href)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  scrollToSection(item.href);
+                }}
                 className="text-text-secondary hover:text-primary transition-colors duration-200 font-medium"
               >
                 {item.label}
@@ -161,8 +184,16 @@ const Header: React.FC = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1, duration: 0.3 }}
-                    onClick={() => scrollToSection(item.href)}
-                    className="text-left text-text-primary hover:text-primary transition-colors duration-200 font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:bg-primary/5 border-l-4 border-transparent hover:border-primary text-base sm:text-lg"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      scrollToSection(item.href);
+                    }}
+                    onTouchEnd={(e) => {
+                      e.preventDefault();
+                      scrollToSection(item.href);
+                    }}
+                    className="text-left text-text-primary hover:text-primary transition-colors duration-200 font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:bg-primary/5 border-l-4 border-transparent hover:border-primary text-base sm:text-lg touch-manipulation"
                   >
                     {item.label}
                   </motion.button>
