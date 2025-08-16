@@ -1,17 +1,66 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import FeatureCard from './FeatureCard';
 import { features } from '../data/features';
 
 const Features: React.FC = () => {
+  // Optimize animations based on device type
+  const animationConfig = useMemo(() => {
+    const width = window.innerWidth;
+    const userAgent = navigator.userAgent;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    let deviceType: 'mobile' | 'tablet' | 'desktop';
+    if (width < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+      deviceType = 'mobile';
+    } else if (width < 1024 || /iPad|Android(?!.*Mobile)/i.test(userAgent)) {
+      deviceType = 'tablet';
+    } else {
+      deviceType = 'desktop';
+    }
+
+    if (prefersReducedMotion) {
+      return {
+        shouldAnimate: false,
+        duration: 0,
+        delay: 0,
+        buttonHover: {}
+      };
+    }
+
+    switch (deviceType) {
+      case 'mobile':
+        return {
+          shouldAnimate: true,
+          duration: 0.3,
+          delay: 0,
+          buttonHover: { scale: 1.02 }
+        };
+      case 'tablet':
+        return {
+          shouldAnimate: true,
+          duration: 0.4,
+          delay: 0,
+          buttonHover: { scale: 1.03 }
+        };
+      default:
+        return {
+          shouldAnimate: true,
+          duration: 0.5,
+          delay: 0,
+          buttonHover: { scale: 1.05 }
+        };
+    }
+  }, []);
+
   return (
     <section id="features" className="py-20 lg:py-32 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={animationConfig.shouldAnimate ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration } : { duration: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
@@ -43,15 +92,15 @@ const Features: React.FC = () => {
 
         {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={animationConfig.shouldAnimate ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration, delay: 0.2 } : { duration: 0 }}
           viewport={{ once: true }}
           className="text-center mt-16"
         >
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={animationConfig.shouldAnimate ? animationConfig.buttonHover : {}}
+            whileTap={animationConfig.shouldAnimate ? { scale: 0.98 } : {}}
             className="btn-primary text-lg px-8 py-4"
           >
             Explore All Features

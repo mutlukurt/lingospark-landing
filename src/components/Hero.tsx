@@ -21,12 +21,39 @@ const Hero: React.FC = () => {
     }
   }, []);
 
-  // Disable animations on mobile and tablet for better performance
-  const shouldAnimate = deviceType === 'desktop';
+  // Optimize animations for different device types
+  const animationConfig = useMemo(() => {
+    switch (deviceType) {
+      case 'mobile':
+        return {
+          shouldAnimate: true,
+          duration: 0.3,
+          delay: 0.1,
+          mouseTracking: false,
+          reducedMotion: true
+        };
+      case 'tablet':
+        return {
+          shouldAnimate: true,
+          duration: 0.4,
+          delay: 0.15,
+          mouseTracking: true,
+          reducedMotion: false
+        };
+      default:
+        return {
+          shouldAnimate: true,
+          duration: 0.5,
+          delay: 0.1,
+          mouseTracking: true,
+          reducedMotion: false
+        };
+    }
+  }, [deviceType]);
 
   useEffect(() => {
-    // Optimize mouse tracking based on device type - disable for mobile and tablet
-    if (deviceType !== 'desktop') return;
+    // Optimize mouse tracking based on device type
+    if (!animationConfig.mouseTracking) return;
 
     let animationFrame: number;
     
@@ -57,7 +84,7 @@ const Hero: React.FC = () => {
         cancelAnimationFrame(animationFrame);
       }
     };
-  }, [deviceType]);
+  }, [deviceType, animationConfig.mouseTracking]);
 
   const floatingBadges = [
     { icon: Award, text: 'A+', color: 'from-green-400 to-emerald-500', position: { top: '20%', right: '15%' } },
@@ -74,15 +101,15 @@ const Hero: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <motion.div
-            initial={shouldAnimate ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
+            initial={animationConfig.shouldAnimate ? { opacity: 0, x: deviceType === 'mobile' ? -10 : -20 } : { opacity: 1, x: 0 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={shouldAnimate ? { duration: 0.5, delay: 0.1 } : { duration: 0 }}
+            transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration, delay: animationConfig.delay } : { duration: 0 }}
             className="text-center lg:text-left"
           >
             <motion.h1
-              initial={shouldAnimate ? { opacity: 0, y: 15 } : { opacity: 1, y: 0 }}
+              initial={animationConfig.shouldAnimate ? { opacity: 0, y: deviceType === 'mobile' ? 8 : 15 } : { opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={shouldAnimate ? { duration: 0.4, delay: 0.2 } : { duration: 0 }}
+              transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration, delay: animationConfig.delay + 0.1 } : { duration: 0 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-text-primary mb-6 leading-tight"
             >
               Learn English the{' '}
@@ -93,9 +120,9 @@ const Hero: React.FC = () => {
             </motion.h1>
             
             <motion.p
-              initial={shouldAnimate ? { opacity: 0, y: 15 } : { opacity: 1, y: 0 }}
+              initial={animationConfig.shouldAnimate ? { opacity: 0, y: deviceType === 'mobile' ? 8 : 15 } : { opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={shouldAnimate ? { duration: 0.4, delay: 0.3 } : { duration: 0 }}
+              transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration, delay: animationConfig.delay + 0.2 } : { duration: 0 }}
               className="text-base sm:text-lg md:text-xl text-text-secondary mb-8 max-w-2xl mx-auto lg:mx-0"
             >
               Master English through interactive games, personalized learning paths, and 
@@ -103,14 +130,14 @@ const Hero: React.FC = () => {
             </motion.p>
             
             <motion.div
-              initial={shouldAnimate ? { opacity: 0, y: 15 } : { opacity: 1, y: 0 }}
+              initial={animationConfig.shouldAnimate ? { opacity: 0, y: deviceType === 'mobile' ? 8 : 15 } : { opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={shouldAnimate ? { duration: 0.4, delay: 0.4 } : { duration: 0 }}
+              transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration, delay: animationConfig.delay + 0.3 } : { duration: 0 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={animationConfig.reducedMotion ? {} : { scale: 1.05 }}
+                whileTap={animationConfig.reducedMotion ? {} : { scale: 0.95 }}
                 className="btn-primary flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               >
                 Start Free
@@ -118,8 +145,8 @@ const Hero: React.FC = () => {
               </motion.button>
               
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={animationConfig.reducedMotion ? {} : { scale: 1.05 }}
+                whileTap={animationConfig.reducedMotion ? {} : { scale: 0.95 }}
                 className="btn-secondary flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               >
                 Explore Features
@@ -127,9 +154,9 @@ const Hero: React.FC = () => {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={animationConfig.shouldAnimate ? { opacity: 0 } : { opacity: 1 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
+              transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration, delay: animationConfig.delay + 0.4 } : { duration: 0 }}
               className="flex items-center justify-center lg:justify-start gap-8 mt-8 text-text-secondary"
             >
               <div className="text-center">
@@ -149,9 +176,9 @@ const Hero: React.FC = () => {
 
           {/* Right Content - Mascot & Illustration */}
           <motion.div
-            initial={shouldAnimate ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
+            initial={animationConfig.shouldAnimate ? { opacity: 0, x: deviceType === 'mobile' ? 10 : 20 } : { opacity: 1, x: 0 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={shouldAnimate ? { duration: 0.5, delay: 0.2 } : { duration: 0 }}
+            transition={animationConfig.shouldAnimate ? { duration: animationConfig.duration, delay: animationConfig.delay + 0.1 } : { duration: 0 }}
             className="relative flex items-center justify-center"
           >
             {/* 3D Background */}
@@ -161,11 +188,11 @@ const Hero: React.FC = () => {
             
             {/* Main Mascot Illustration */}
             <motion.div
-              animate={{
-                x: mousePosition.x * 0.5,
-                y: mousePosition.y * 0.5,
-              }}
-              transition={{ type: "spring", stiffness: 150, damping: 15 }}
+              animate={animationConfig.mouseTracking ? {
+                x: mousePosition.x * (deviceType === 'mobile' ? 0.2 : deviceType === 'tablet' ? 0.3 : 0.5),
+                y: mousePosition.y * (deviceType === 'mobile' ? 0.2 : deviceType === 'tablet' ? 0.3 : 0.5),
+              } : {}}
+              transition={animationConfig.mouseTracking ? { type: "spring", stiffness: deviceType === 'tablet' ? 100 : 150, damping: deviceType === 'tablet' ? 20 : 15 } : {}}
               className="relative z-10"
             >
               {/* Owl Mascot SVG */}
@@ -212,18 +239,21 @@ const Hero: React.FC = () => {
             {floatingBadges.map((badge, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0 }}
+                initial={animationConfig.shouldAnimate ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 1 + index * 0.2 }}
+                transition={animationConfig.shouldAnimate ? { 
+                  duration: animationConfig.duration * 1.2, 
+                  delay: (deviceType === 'mobile' ? 0.8 : 1) + index * (deviceType === 'mobile' ? 0.1 : 0.2) 
+                } : { duration: 0 }}
                 className="absolute floating-element"
                 style={badge.position}
               >
                 <motion.div
-                  animate={{
-                    x: mousePosition.x * (0.2 + index * 0.1),
-                    y: mousePosition.y * (0.2 + index * 0.1),
-                  }}
-                  transition={{ type: "spring", stiffness: 100, damping: 10 }}
+                  animate={animationConfig.mouseTracking ? {
+                    x: mousePosition.x * (deviceType === 'mobile' ? 0.1 : (0.2 + index * 0.1)),
+                    y: mousePosition.y * (deviceType === 'mobile' ? 0.1 : (0.2 + index * 0.1)),
+                  } : {}}
+                  transition={animationConfig.mouseTracking ? { type: "spring", stiffness: deviceType === 'tablet' ? 80 : 100, damping: deviceType === 'tablet' ? 15 : 10 } : {}}
                   className={`
                     bg-gradient-to-br ${badge.color} 
                     text-white p-3 rounded-2xl shadow-lg 

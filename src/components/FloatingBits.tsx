@@ -38,8 +38,8 @@ const FloatingBits: React.FC = () => {
       const colors = ['#5865F2', '#FFB86B', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
       const shapes: ('circle' | 'square' | 'triangle')[] = ['circle', 'square', 'triangle'];
       
-      // Optimize element count based on device type
-      const count = deviceType === 'mobile' ? 6 : deviceType === 'tablet' ? 10 : 15;
+      // Use count from animation config
+      const count = 15; // Generate full set, we'll filter later
       
       for (let i = 0; i < count; i++) {
         bits.push({
@@ -101,60 +101,71 @@ const FloatingBits: React.FC = () => {
     }
   };
 
-  // Don't render animations if user prefers reduced motion or on mobile/tablet
-  if (prefersReducedMotion || deviceType !== 'desktop') {
+  // Optimize animations based on device and user preferences
+  const animationConfig = useMemo(() => {
+    if (prefersReducedMotion) {
+      return {
+        shouldAnimate: false,
+        showStatic: true,
+        count: 4,
+        opacity: 'opacity-20'
+      };
+    }
+    
+    switch (deviceType) {
+      case 'mobile':
+        return {
+          shouldAnimate: true,
+          showStatic: false,
+          count: 6,
+          opacity: 'opacity-10',
+          duration: 4, // Slower animations
+          movement: { y: 3, x: 1, rotate: 90, scale: 0.15 }
+        };
+      case 'tablet':
+        return {
+          shouldAnimate: true,
+          showStatic: false,
+          count: 10,
+          opacity: 'opacity-15',
+          duration: 3.5,
+          movement: { y: 5, x: 2, rotate: 180, scale: 0.25 }
+        };
+      default:
+        return {
+          shouldAnimate: true,
+          showStatic: false,
+          count: 15,
+          opacity: 'opacity-20',
+          duration: 3,
+          movement: { y: 10, x: 5, rotate: 360, scale: 0.4 }
+        };
+    }
+  }, [prefersReducedMotion, deviceType]);
+
+  // Render static elements for reduced motion preference
+  if (!animationConfig.shouldAnimate) {
     return (
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {deviceType === 'mobile' ? (
-          // On mobile, show fewer static elements
-          bits.slice(0, 2).map((bit) => (
-            <div
-              key={bit.id}
-              className="absolute opacity-10"
-              style={{
-                left: `${bit.x}%`,
-                top: `${bit.y}%`,
-              }}
-            >
-              {renderShape(bit)}
-            </div>
-          ))
-        ) : deviceType === 'tablet' ? (
-          // On tablet, show moderate static elements
-          bits.slice(0, 3).map((bit) => (
-            <div
-              key={bit.id}
-              className="absolute opacity-15"
-              style={{
-                left: `${bit.x}%`,
-                top: `${bit.y}%`,
-              }}
-            >
-              {renderShape(bit)}
-            </div>
-          ))
-        ) : (
-          // For reduced motion preference, show more static elements
-          bits.slice(0, 4).map((bit) => (
-            <div
-              key={bit.id}
-              className="absolute"
-              style={{
-                left: `${bit.x}%`,
-                top: `${bit.y}%`,
-              }}
-            >
-              {renderShape(bit)}
-            </div>
-          ))
-        )}
+        {bits.slice(0, animationConfig.count).map((bit) => (
+          <div
+            key={bit.id}
+            className={`absolute ${animationConfig.opacity}`}
+            style={{
+              left: `${bit.x}%`,
+              top: `${bit.y}%`,
+            }}
+          >
+            {renderShape(bit)}
+          </div>
+        ))}
       </div>
     );
   }
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {bits.map((bit) => (
+      {bits.slice(0, animationConfig.count).map((bit) => (
         <motion.div
           key={bit.id}
           initial={{ 
@@ -164,18 +175,19 @@ const FloatingBits: React.FC = () => {
             scale: 0 
           }}
           animate={{
-            y: deviceType === 'mobile' ? [-5, 5, -5] : deviceType === 'tablet' ? [-7, 7, -7] : [-10, 10, -10],
-            x: deviceType === 'mobile' ? [-2, 2, -2] : deviceType === 'tablet' ? [-3, 3, -3] : [-5, 5, -5],
-            rotate: deviceType === 'mobile' ? [0, 90, 180] : deviceType === 'tablet' ? [0, 135, 270] : [0, 180, 360],
-            scale: deviceType === 'mobile' ? [0.9, 1.1, 0.9] : deviceType === 'tablet' ? [0.85, 1.15, 0.85] : [0.8, 1.2, 0.8],
+            y: [-animationConfig.movement.y, animationConfig.movement.y, -animationConfig.movement.y],
+            x: [-animationConfig.movement.x, animationConfig.movement.x, -animationConfig.movement.x],
+            rotate: [0, animationConfig.movement.rotate / 2, animationConfig.movement.rotate],
+            scale: [1 - animationConfig.movement.scale, 1 + animationConfig.movement.scale, 1 - animationConfig.movement.scale],
           }}
           transition={{
-            duration: deviceType === 'mobile' ? bit.duration * 1.5 : deviceType === 'tablet' ? bit.duration * 1.2 : bit.duration,
+            duration: bit.duration * (animationConfig.duration / 3),
             delay: bit.delay,
             repeat: Infinity,
             ease: "easeInOut",
+            repeatType: "reverse"
           }}
-          className="absolute"
+          className={`absolute ${animationConfig.opacity}`}
           style={{
             left: `${bit.x}%`,
             top: `${bit.y}%`,
