@@ -7,14 +7,23 @@ import Mascot3D from './Mascot3D';
 const Hero: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Check if device is mobile to disable mouse tracking
-  const isMobile = useMemo(() => {
-    return window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // Check device type for performance optimization
+  const deviceType = useMemo(() => {
+    const width = window.innerWidth;
+    const userAgent = navigator.userAgent;
+    
+    if (width < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+      return 'mobile';
+    } else if (width < 1024 || /iPad|Android(?!.*Mobile)/i.test(userAgent)) {
+      return 'tablet';
+    } else {
+      return 'desktop';
+    }
   }, []);
 
   useEffect(() => {
-    // Don't track mouse on mobile devices for better performance
-    if (isMobile) return;
+    // Optimize mouse tracking based on device type
+    if (deviceType === 'mobile') return;
 
     let animationFrame: number;
     
@@ -27,9 +36,13 @@ const Hero: React.FC = () => {
       animationFrame = requestAnimationFrame(() => {
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;
+        
+        // Reduce mouse tracking intensity on tablets
+        const intensity = deviceType === 'tablet' ? 10 : 20;
+        
         setMousePosition({
-          x: (clientX / innerWidth - 0.5) * 20,
-          y: (clientY / innerHeight - 0.5) * 20,
+          x: (clientX / innerWidth - 0.5) * intensity,
+          y: (clientY / innerHeight - 0.5) * intensity,
         });
       });
     };
@@ -41,7 +54,7 @@ const Hero: React.FC = () => {
         cancelAnimationFrame(animationFrame);
       }
     };
-  }, [isMobile]);
+  }, [deviceType]);
 
   const floatingBadges = [
     { icon: Award, text: 'A+', color: 'from-green-400 to-emerald-500', position: { top: '20%', right: '15%' } },

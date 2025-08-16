@@ -24,13 +24,22 @@ const FloatingShape: React.FC<{ position: [number, number, number]; color: strin
 };
 
 const Scene: React.FC = () => {
-  // Check if device is mobile/low-end
-  const isMobile = useMemo(() => {
-    return window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // Check device type for performance optimization
+  const deviceType = useMemo(() => {
+    const width = window.innerWidth;
+    const userAgent = navigator.userAgent;
+    
+    if (width < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+      return 'mobile';
+    } else if (width < 1024 || /iPad|Android(?!.*Mobile)/i.test(userAgent)) {
+      return 'tablet';
+    } else {
+      return 'desktop';
+    }
   }, []);
 
   const shapes = useMemo(() => {
-    // Reduce shapes on mobile for better performance
+    // Optimize shapes based on device type
     const allShapes = [
       { position: [-2, 1, -1] as [number, number, number], color: '#5865F2' },
       { position: [2, -1, -0.5] as [number, number, number], color: '#FFB86B' },
@@ -39,8 +48,10 @@ const Scene: React.FC = () => {
       { position: [1.5, 0, -1] as [number, number, number], color: '#EF4444' },
     ];
     
-    return isMobile ? allShapes.slice(0, 3) : allShapes;
-  }, [isMobile]);
+    if (deviceType === 'mobile') return allShapes.slice(0, 3);
+    if (deviceType === 'tablet') return allShapes.slice(0, 4);
+    return allShapes;
+  }, [deviceType]);
 
   return (
     <>
@@ -60,16 +71,31 @@ const Scene: React.FC = () => {
 };
 
 const Mascot3D: React.FC = () => {
-  // Check if user prefers reduced motion or device is mobile
-  const shouldRender3D = useMemo(() => {
+  // Check device type and user preferences for 3D rendering
+  const render3DConfig = useMemo(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const width = window.innerWidth;
+    const userAgent = navigator.userAgent;
     
-    // Don't render 3D on mobile or if user prefers reduced motion
-    return !prefersReducedMotion && !isMobile;
+    let deviceType: 'mobile' | 'tablet' | 'desktop';
+    if (width < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+      deviceType = 'mobile';
+    } else if (width < 1024 || /iPad|Android(?!.*Mobile)/i.test(userAgent)) {
+      deviceType = 'tablet';
+    } else {
+      deviceType = 'desktop';
+    }
+    
+    return {
+      shouldRender: !prefersReducedMotion && deviceType !== 'mobile',
+      deviceType,
+      autoRotateSpeed: deviceType === 'tablet' ? 0.2 : 0.3,
+      dpr: deviceType === 'tablet' ? [1, 1.5] : [1, 2],
+      performanceMin: deviceType === 'tablet' ? 0.3 : 0.5
+    };
   }, []);
 
-  if (!shouldRender3D) {
+  if (!render3DConfig.shouldRender) {
     return null;
   }
 
@@ -78,8 +104,9 @@ const Mascot3D: React.FC = () => {
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         style={{ background: 'transparent' }}
-        performance={{ min: 0.5 }}
-        dpr={[1, 2]}
+        performance={{ min: render3DConfig.performanceMin }}
+        dpr={render3DConfig.dpr}
+        frameloop={render3DConfig.deviceType === 'tablet' ? 'demand' : 'always'}
       >
         <Suspense fallback={null}>
           <Scene />
@@ -88,7 +115,8 @@ const Mascot3D: React.FC = () => {
             enablePan={false} 
             enableRotate={false}
             autoRotate
-            autoRotateSpeed={0.3}
+            autoRotateSpeed={render3DConfig.autoRotateSpeed}
+            enableDamping={render3DConfig.deviceType !== 'tablet'}
           />
         </Suspense>
       </Canvas>

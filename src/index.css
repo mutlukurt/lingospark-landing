@@ -66,3 +66,30 @@
     transition: none !important;
   }
 }
+
+/* Tablet-specific optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Reduce animation complexity on tablets */
+  .animate-float {
+    animation-duration: 4s !important;
+  }
+  
+  .animate-float-delayed {
+    animation-duration: 4s !important;
+    animation-delay: 2s !important;
+  }
+  
+  /* Optimize transforms for tablet performance */
+  .hover\\:scale-105:hover {
+    transform: scale(1.03) !important;
+  }
+  
+  /* Reduce backdrop blur intensity on tablets */
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px) !important;
+  }
+  
+  .backdrop-blur-md {
+    backdrop-filter: blur(6px) !important;
+  }
+}

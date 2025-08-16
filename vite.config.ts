@@ -25,6 +25,12 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
+        // Additional tablet optimizations
+        pure_funcs: ['console.log', 'console.info', 'console.warn'],
+        passes: 2,
+      },
+      mangle: {
+        safari10: true,
       },
     },
     // Optimize chunk size

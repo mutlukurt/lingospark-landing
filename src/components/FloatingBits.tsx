@@ -18,9 +18,18 @@ const FloatingBits: React.FC = () => {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  // Check if device is mobile/low-end
-  const isMobile = useMemo(() => {
-    return window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // Check device type for performance optimization
+  const deviceType = useMemo(() => {
+    const width = window.innerWidth;
+    const userAgent = navigator.userAgent;
+    
+    if (width < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+      return 'mobile';
+    } else if (width < 1024 || /iPad|Android(?!.*Mobile)/i.test(userAgent)) {
+      return 'tablet';
+    } else {
+      return 'desktop';
+    }
   }, []);
 
   const bits = useMemo(() => {
@@ -29,8 +38,8 @@ const FloatingBits: React.FC = () => {
       const colors = ['#5865F2', '#FFB86B', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
       const shapes: ('circle' | 'square' | 'triangle')[] = ['circle', 'square', 'triangle'];
       
-      // Reduce number of elements on mobile
-      const count = isMobile ? 6 : 15;
+      // Optimize element count based on device type
+      const count = deviceType === 'mobile' ? 6 : deviceType === 'tablet' ? 10 : 15;
       
       for (let i = 0; i < count; i++) {
         bits.push({
@@ -49,7 +58,7 @@ const FloatingBits: React.FC = () => {
     };
 
     return generateBits();
-  }, [isMobile]);
+  }, [deviceType]);
 
   const renderShape = (bit: FloatingBit) => {
     const baseClasses = "absolute opacity-20";
@@ -124,13 +133,13 @@ const FloatingBits: React.FC = () => {
             scale: 0 
           }}
           animate={{
-            y: isMobile ? [-5, 5, -5] : [-10, 10, -10],
-            x: isMobile ? [-2, 2, -2] : [-5, 5, -5],
-            rotate: isMobile ? [0, 90, 180] : [0, 180, 360],
-            scale: isMobile ? [0.9, 1.1, 0.9] : [0.8, 1.2, 0.8],
+            y: deviceType === 'mobile' ? [-5, 5, -5] : deviceType === 'tablet' ? [-7, 7, -7] : [-10, 10, -10],
+            x: deviceType === 'mobile' ? [-2, 2, -2] : deviceType === 'tablet' ? [-3, 3, -3] : [-5, 5, -5],
+            rotate: deviceType === 'mobile' ? [0, 90, 180] : deviceType === 'tablet' ? [0, 135, 270] : [0, 180, 360],
+            scale: deviceType === 'mobile' ? [0.9, 1.1, 0.9] : deviceType === 'tablet' ? [0.85, 1.15, 0.85] : [0.8, 1.2, 0.8],
           }}
           transition={{
-            duration: isMobile ? bit.duration * 1.5 : bit.duration,
+            duration: deviceType === 'mobile' ? bit.duration * 1.5 : deviceType === 'tablet' ? bit.duration * 1.2 : bit.duration,
             delay: bit.delay,
             repeat: Infinity,
             ease: "easeInOut",
