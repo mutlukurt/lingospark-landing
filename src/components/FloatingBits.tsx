@@ -101,22 +101,39 @@ const FloatingBits: React.FC = () => {
     }
   };
 
-  // Don't render animations if user prefers reduced motion
-  if (prefersReducedMotion) {
+  // Don't render animations if user prefers reduced motion or on mobile
+  if (prefersReducedMotion || deviceType === 'mobile') {
     return (
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {bits.slice(0, 3).map((bit) => (
-          <div
-            key={bit.id}
-            className="absolute"
-            style={{
-              left: `${bit.x}%`,
-              top: `${bit.y}%`,
-            }}
-          >
-            {renderShape(bit)}
-          </div>
-        ))}
+        {deviceType === 'mobile' ? (
+          // On mobile, show fewer static elements
+          bits.slice(0, 2).map((bit) => (
+            <div
+              key={bit.id}
+              className="absolute opacity-10"
+              style={{
+                left: `${bit.x}%`,
+                top: `${bit.y}%`,
+              }}
+            >
+              {renderShape(bit)}
+            </div>
+          ))
+        ) : (
+          // For reduced motion preference, show more static elements
+          bits.slice(0, 3).map((bit) => (
+            <div
+              key={bit.id}
+              className="absolute"
+              style={{
+                left: `${bit.x}%`,
+                top: `${bit.y}%`,
+              }}
+            >
+              {renderShape(bit)}
+            </div>
+          ))
+        )}
       </div>
     );
   }

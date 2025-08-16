@@ -15,19 +15,37 @@ const Footer = lazy(() => import('./components/Footer'));
 const CookieNotice = lazy(() => import('./components/CookieNotice'));
 
 function App() {
+  // Detect mobile for performance optimizations
+  const isMobile = window.innerWidth < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
   return (
     <div className="min-h-screen">
       <Header />
       <main>
         <Hero />
-        <Features />
-        <Suspense fallback={<Loading />}>
-          <DictionaryPreview />
-          <CalendarPreview />
-          <GamesPreview />
-          <Courses />
-          <CtaBand />
-        </Suspense>
+        {isMobile ? (
+          // Mobile: Load everything immediately but without heavy animations
+          <>
+            <Features />
+            <DictionaryPreview />
+            <CalendarPreview />
+            <GamesPreview />
+            <Courses />
+            <CtaBand />
+          </>
+        ) : (
+          // Desktop/Tablet: Use lazy loading with animations
+          <>
+            <Features />
+            <Suspense fallback={<Loading />}>
+              <DictionaryPreview />
+              <CalendarPreview />
+              <GamesPreview />
+              <Courses />
+              <CtaBand />
+            </Suspense>
+          </>
+        )}
       </main>
       <Suspense fallback={<Loading />}>
         <Footer />
