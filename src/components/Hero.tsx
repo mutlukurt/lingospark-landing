@@ -86,19 +86,29 @@ const Hero: React.FC = () => {
     };
   }, [deviceType, animationConfig.mouseTracking]);
 
-  const floatingBadges = [
-    { icon: Award, text: 'A+', color: 'from-green-400 to-emerald-500', position: { top: '20%', right: '15%' } },
-    { icon: Star, text: '★', color: 'from-yellow-400 to-orange-500', position: { top: '60%', right: '5%' } },
-    { icon: BookOpen, text: '📚', color: 'from-blue-400 to-purple-500', position: { top: '40%', right: '25%' } },
-  ];
+  const floatingBadges = useMemo(() => {
+    // Adjust badge positions based on device type
+    const positions = deviceType === 'mobile' 
+      ? [
+          { icon: Award, text: 'A+', color: 'from-green-400 to-emerald-500', position: { top: '15%', right: '10%' } },
+          { icon: Star, text: '★', color: 'from-yellow-400 to-orange-500', position: { top: '65%', right: '5%' } },
+          { icon: BookOpen, text: '📚', color: 'from-blue-400 to-purple-500', position: { top: '40%', right: '15%' } },
+        ]
+      : [
+          { icon: Award, text: 'A+', color: 'from-green-400 to-emerald-500', position: { top: '20%', right: '15%' } },
+          { icon: Star, text: '★', color: 'from-yellow-400 to-orange-500', position: { top: '60%', right: '5%' } },
+          { icon: BookOpen, text: '📚', color: 'from-blue-400 to-purple-500', position: { top: '40%', right: '25%' } },
+        ];
+    return positions;
+  }, [deviceType]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 w-full max-w-full">
       {/* Background Elements */}
       <FloatingBits />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
           {/* Left Content */}
           <motion.div
             initial={animationConfig.shouldAnimate ? { opacity: 0, x: deviceType === 'mobile' ? -10 : -20 } : { opacity: 1, x: 0 }}
@@ -182,7 +192,7 @@ const Hero: React.FC = () => {
             className="relative flex items-center justify-center"
           >
             {/* 3D Background */}
-            <div className="absolute inset-0 scale-150">
+            <div className="absolute inset-0 scale-110 sm:scale-125 lg:scale-150 overflow-hidden">
               <Mascot3D />
             </div>
             
@@ -196,7 +206,7 @@ const Hero: React.FC = () => {
               className="relative z-10"
             >
               {/* Owl Mascot SVG */}
-              <div className="w-80 h-80 sm:w-96 sm:h-96 mx-auto relative">
+              <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 mx-auto relative max-w-full">
                 <svg
                   viewBox="0 0 200 200"
                   className="w-full h-full drop-shadow-2xl"

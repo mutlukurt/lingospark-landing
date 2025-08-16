@@ -19,9 +19,9 @@ function App() {
   const isMobileOrTablet = window.innerWidth < 1024 || /Android|iPhone|iPad|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <Header />
-      <main>
+      <main className="overflow-x-hidden">
         <Hero />
         {isMobileOrTablet ? (
           // Mobile & Tablet: Load everything immediately but without heavy animations

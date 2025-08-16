@@ -104,21 +104,21 @@ const Header: React.FC = () => {
           : 'bg-transparent'
       }`}
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="flex items-center justify-between h-16 lg:h-20 w-full">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2 cursor-pointer"
+            className="flex items-center space-x-2 cursor-pointer flex-shrink-0"
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
               setIsMenuOpen(false);
             }}
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">LS</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xs sm:text-sm">LL</span>
             </div>
-            <span className="text-xl font-heading font-bold text-text-primary">
+            <span className="text-lg sm:text-xl font-heading font-bold text-text-primary truncate">
               LinguaLearn
             </span>
           </motion.div>
@@ -158,7 +158,7 @@ const Header: React.FC = () => {
           <motion.button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             whileTap={{ scale: 0.95 }}
-            className="lg:hidden p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/20 shadow-lg backdrop-blur-sm"
+            className="lg:hidden p-2 sm:p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/20 shadow-lg backdrop-blur-sm flex-shrink-0"
             aria-label="Toggle menu"
           >
             <motion.div
