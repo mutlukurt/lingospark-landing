@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // Detect mobile for performance optimizations
-  const isMobile = window.innerWidth < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // Detect mobile and tablet for performance optimizations
+  const isMobileOrTablet = window.innerWidth < 1024 || /Android|iPhone|iPad|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -73,14 +73,14 @@ const Header: React.FC = () => {
           document.body.scrollTop = scrollToPosition;
         }
       }
-    }, isMobile ? 300 : 100); // Longer delay for mobile to ensure menu is closed
+    }, isMobileOrTablet ? 300 : 100); // Longer delay for mobile/tablet to ensure menu is closed
   };
 
   return (
     <motion.header
-      initial={isMobile ? { y: 0 } : { y: -50 }}
+      initial={isMobileOrTablet ? { y: 0 } : { y: -50 }}
       animate={{ y: 0 }}
-      transition={isMobile ? { duration: 0 } : { duration: 0.4, ease: "easeOut" }}
+      transition={isMobileOrTablet ? { duration: 0 } : { duration: 0.4, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/80 backdrop-blur-md shadow-lg' 

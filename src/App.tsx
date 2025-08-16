@@ -15,16 +15,16 @@ const Footer = lazy(() => import('./components/Footer'));
 const CookieNotice = lazy(() => import('./components/CookieNotice'));
 
 function App() {
-  // Detect mobile for performance optimizations
-  const isMobile = window.innerWidth < 768 || /Android.*Mobile|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // Detect mobile and tablet for performance optimizations
+  const isMobileOrTablet = window.innerWidth < 1024 || /Android|iPhone|iPad|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   return (
     <div className="min-h-screen">
       <Header />
       <main>
         <Hero />
-        {isMobile ? (
-          // Mobile: Load everything immediately but without heavy animations
+        {isMobileOrTablet ? (
+          // Mobile & Tablet: Load everything immediately but without heavy animations
           <>
             <Features />
             <DictionaryPreview />
@@ -34,7 +34,7 @@ function App() {
             <CtaBand />
           </>
         ) : (
-          // Desktop/Tablet: Use lazy loading with animations
+          // Desktop: Use lazy loading with animations
           <>
             <Features />
             <Suspense fallback={<Loading />}>

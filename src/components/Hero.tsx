@@ -21,12 +21,12 @@ const Hero: React.FC = () => {
     }
   }, []);
 
-  // Disable animations on mobile for better performance
-  const shouldAnimate = deviceType !== 'mobile';
+  // Disable animations on mobile and tablet for better performance
+  const shouldAnimate = deviceType === 'desktop';
 
   useEffect(() => {
-    // Optimize mouse tracking based on device type
-    if (deviceType === 'mobile') return;
+    // Optimize mouse tracking based on device type - disable for mobile and tablet
+    if (deviceType !== 'desktop') return;
 
     let animationFrame: number;
     

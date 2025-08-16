@@ -101,8 +101,8 @@ const FloatingBits: React.FC = () => {
     }
   };
 
-  // Don't render animations if user prefers reduced motion or on mobile
-  if (prefersReducedMotion || deviceType === 'mobile') {
+  // Don't render animations if user prefers reduced motion or on mobile/tablet
+  if (prefersReducedMotion || deviceType !== 'desktop') {
     return (
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {deviceType === 'mobile' ? (
@@ -119,9 +119,23 @@ const FloatingBits: React.FC = () => {
               {renderShape(bit)}
             </div>
           ))
+        ) : deviceType === 'tablet' ? (
+          // On tablet, show moderate static elements
+          bits.slice(0, 3).map((bit) => (
+            <div
+              key={bit.id}
+              className="absolute opacity-15"
+              style={{
+                left: `${bit.x}%`,
+                top: `${bit.y}%`,
+              }}
+            >
+              {renderShape(bit)}
+            </div>
+          ))
         ) : (
           // For reduced motion preference, show more static elements
-          bits.slice(0, 3).map((bit) => (
+          bits.slice(0, 4).map((bit) => (
             <div
               key={bit.id}
               className="absolute"

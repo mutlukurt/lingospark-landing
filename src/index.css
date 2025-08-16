@@ -107,9 +107,9 @@
   }
 }
 
-/* Mobile Performance Optimizations */
-@media (max-width: 767px) {
-  /* Disable most animations on mobile phones for better performance */
+/* Mobile & Tablet Performance Optimizations */
+@media (max-width: 1023px) {
+  /* Disable most animations on mobile phones and tablets for better performance */
   *,
   *::before,
   *::after {
@@ -132,15 +132,6 @@
   [class*="animate-"] {
     transform: none !important;
     animation: none !important;
-  }
-}
-
-/* Tablet Optimizations */
-@media (min-width: 768px) and (max-width: 1023px) {
-  /* Faster animations for tablets */
-  * {
-    animation-duration: 0.2s !important;
-    transition-duration: 0.2s !important;
   }
 }
 
