@@ -4,6 +4,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -85,17 +98,23 @@ const Header: React.FC = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
+          <motion.button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-white/20 transition-colors"
+            whileTap={{ scale: 0.95 }}
+            className="lg:hidden p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/20 shadow-lg backdrop-blur-sm"
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? (
-              <X className="w-6 h-6 text-text-primary" />
-            ) : (
-              <Menu className="w-6 h-6 text-text-primary" />
-            )}
-          </button>
+            <motion.div
+              animate={{ rotate: isMenuOpen ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {isMenuOpen ? (
+                <X className="w-6 h-6 text-text-primary" />
+              ) : (
+                <Menu className="w-6 h-6 text-text-primary" />
+              )}
+            </motion.div>
+          </motion.button>
         </div>
       </nav>
 
@@ -103,30 +122,39 @@ const Header: React.FC = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white/95 backdrop-blur-md border-t border-white/20"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="lg:hidden mobile-menu mobile-menu-backdrop shadow-xl border-b border-white/20"
           >
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex flex-col space-y-4">
-                {navItems.map((item) => (
-                  <button
+            <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
+              <div className="flex flex-col space-y-3 sm:space-y-5">
+                {navItems.map((item, index) => (
+                  <motion.button
                     key={item.label}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
                     onClick={() => scrollToSection(item.href)}
-                    className="text-left text-text-secondary hover:text-primary transition-colors duration-200 font-medium py-2"
+                    className="text-left text-text-primary hover:text-primary transition-colors duration-200 font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:bg-primary/5 border-l-4 border-transparent hover:border-primary text-base sm:text-lg"
                   >
                     {item.label}
-                  </button>
+                  </motion.button>
                 ))}
-                <div className="pt-4 border-t border-gray-200 flex flex-col space-y-3">
-                  <button className="text-left text-text-secondary hover:text-primary transition-colors duration-200 font-medium">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.3 }}
+                  className="pt-4 border-t border-gray-200 flex flex-col space-y-4"
+                >
+                  <button className="text-left text-text-secondary hover:text-primary transition-colors duration-200 font-medium py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:bg-gray-50 text-base sm:text-lg">
                     Sign In
                   </button>
-                  <button className="btn-primary text-center">
+                  <button className="btn-primary text-center py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg">
                     Get Started
                   </button>
-                </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>

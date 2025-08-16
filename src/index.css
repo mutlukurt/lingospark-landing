@@ -93,3 +93,29 @@
     backdrop-filter: blur(6px) !important;
   }
 }
+
+/* Mobile Menu Optimizations */
+@media (max-width: 1023px) {
+  /* Ensure mobile menu is always visible and accessible */
+  .mobile-menu {
+    position: fixed !important;
+    top: 80px !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 50 !important;
+    max-height: calc(100vh - 80px) !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Improve touch targets for mobile */
+  .mobile-menu button {
+    min-height: 48px !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Better backdrop for mobile menu */
+  .mobile-menu-backdrop {
+    backdrop-filter: blur(12px) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+  }
+}
