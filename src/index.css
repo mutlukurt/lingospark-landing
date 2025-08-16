@@ -26,6 +26,8 @@
     background: radial-gradient(ellipse at top, #F7F9FF 0%, #FFF8F2 100%);
     min-height: 100vh;
     overflow-x: hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -156,6 +158,14 @@
   /* Improve touch targets for mobile */
   .mobile-menu button {
     min-height: 48px !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  /* Fix passive event listener issues */
+  .mobile-menu button,
+  button[role="button"],
+  .touch-manipulation {
     touch-action: manipulation !important;
   }
   

@@ -210,14 +210,6 @@ const Header: React.FC = () => {
                       e.stopPropagation();
                       scrollToSection(item.href);
                     }}
-                    onTouchStart={(e) => {
-                      // Improve touch responsiveness
-                      e.preventDefault();
-                    }}
-                    onTouchEnd={(e) => {
-                      e.preventDefault();
-                      scrollToSection(item.href);
-                    }}
                     className="text-left text-text-primary hover:text-primary transition-colors duration-200 font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:bg-primary/5 border-l-4 border-transparent hover:border-primary text-base sm:text-lg touch-manipulation cursor-pointer select-none"
                     style={{ 
                       WebkitTapHighlightColor: 'transparent',

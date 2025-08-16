@@ -112,6 +112,10 @@ const Mascot3D: React.FC = () => {
             autoRotate={render3DConfig.deviceType !== 'mobile'}
             autoRotateSpeed={render3DConfig.autoRotateSpeed}
             enableDamping={render3DConfig.deviceType === 'desktop'}
+            touches={{
+              ONE: undefined,
+              TWO: undefined
+            }}
           />
         </Suspense>
       </Canvas>
