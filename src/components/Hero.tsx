@@ -71,15 +71,15 @@ const Hero: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="text-center lg:text-left"
           >
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-text-primary mb-6 leading-tight"
             >
               Learn English the{' '}
@@ -90,9 +90,9 @@ const Hero: React.FC = () => {
             </motion.h1>
             
             <motion.p
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
               className="text-base sm:text-lg md:text-xl text-text-secondary mb-8 max-w-2xl mx-auto lg:mx-0"
             >
               Master English through interactive games, personalized learning paths, and 
@@ -100,9 +100,9 @@ const Hero: React.FC = () => {
             </motion.p>
             
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <motion.button
@@ -126,7 +126,7 @@ const Hero: React.FC = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
               className="flex items-center justify-center lg:justify-start gap-8 mt-8 text-text-secondary"
             >
               <div className="text-center">
@@ -146,9 +146,9 @@ const Hero: React.FC = () => {
 
           {/* Right Content - Mascot & Illustration */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="relative flex items-center justify-center"
           >
             {/* 3D Background */}

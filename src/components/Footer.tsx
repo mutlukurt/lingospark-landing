@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.4 }}
                 viewport={{ once: true }}
               >
                 {/* Logo */}
@@ -143,7 +143,7 @@ const Footer: React.FC = () => {
                     key={section.title}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
                     viewport={{ once: true }}
                   >
                     <h3 className="font-heading font-semibold text-white mb-4">
@@ -175,7 +175,7 @@ const Footer: React.FC = () => {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.4 }}
               viewport={{ once: true }}
               className="text-gray-300 text-sm"
             >
@@ -186,7 +186,7 @@ const Footer: React.FC = () => {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
               viewport={{ once: true }}
               className="relative"
             >
@@ -204,7 +204,7 @@ const Footer: React.FC = () => {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
               viewport={{ once: true }}
               className="flex gap-6 text-sm"
             >
