@@ -64,7 +64,7 @@ const CalendarPreview: React.FC = () => {
             viewport={{ once: true }}
             className="order-2 lg:order-1"
           >
-            <div className="card-glass p-6 max-w-md mx-auto">
+            <div className="card-glass p-4 sm:p-6 max-w-md mx-auto">
               {/* Calendar Header */}
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-heading font-bold text-lg text-text-primary">Practice Calendar</h3>

@@ -15,13 +15,13 @@ const Features: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-text-primary mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-text-primary mb-6">
             Why Learn with{' '}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               LinguaLearn
             </span>
           </h2>
-          <p className="text-lg sm:text-xl text-text-secondary max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-text-secondary max-w-3xl mx-auto">
             Experience the future of language learning with our innovative approach 
             that makes mastering English engaging, effective, and enjoyable.
           </p>

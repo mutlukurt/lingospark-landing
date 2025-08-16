@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-text-primary mb-6 leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-text-primary mb-6 leading-tight"
             >
               Learn English the{' '}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -58,7 +58,7 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-lg sm:text-xl text-text-secondary mb-8 max-w-2xl mx-auto lg:mx-0"
+              className="text-base sm:text-lg md:text-xl text-text-secondary mb-8 max-w-2xl mx-auto lg:mx-0"
             >
               Master English through interactive games, personalized learning paths, and 
               AI-powered practice sessions. Join thousands of learners worldwide.
@@ -73,7 +73,7 @@ const Hero: React.FC = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-primary flex items-center justify-center gap-2 text-lg px-8 py-4"
+                className="btn-primary flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               >
                 Start Free
                 <Play className="w-5 h-5" />
@@ -82,7 +82,7 @@ const Hero: React.FC = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-secondary flex items-center justify-center gap-2 text-lg px-8 py-4"
+                className="btn-secondary flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               >
                 Explore Features
               </motion.button>

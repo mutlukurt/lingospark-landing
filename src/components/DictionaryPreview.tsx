@@ -101,7 +101,7 @@ const DictionaryPreview: React.FC = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="card-glass p-6 max-w-md mx-auto">
+            <div className="card-glass p-4 sm:p-6 max-w-md mx-auto">
               {/* App Header */}
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-heading font-bold text-lg text-text-primary">My Dictionary</h3>

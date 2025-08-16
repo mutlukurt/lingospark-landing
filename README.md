@@ -1,5 +1,7 @@
 # LinguaLearn Landing - English Learning Platform
 
+🔗 **Live Demo**: [https://mutlukurt.github.io/lingualearn-landing/](https://mutlukurt.github.io/lingualearn-landing/)
+
 A modern, interactive English learning platform built with React, TypeScript, and Tailwind CSS. LinguaLearn offers a comprehensive learning experience through games, personalized dictionaries, progress tracking, and structured courses.
 
 ## 🚀 Features

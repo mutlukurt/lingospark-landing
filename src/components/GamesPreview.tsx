@@ -80,7 +80,7 @@ const GamesPreview: React.FC = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="card-glass p-6 max-w-md mx-auto">
+            <div className="card-glass p-4 sm:p-6 max-w-md mx-auto">
               {/* Game Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">

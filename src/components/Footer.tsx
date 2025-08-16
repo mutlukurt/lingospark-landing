@@ -137,7 +137,7 @@ const Footer: React.FC = () => {
 
             {/* Footer Links */}
             <div className="lg:col-span-3">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                 {footerSections.map((section, index) => (
                   <motion.div
                     key={section.title}
