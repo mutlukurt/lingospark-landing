@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Star, BookOpen, Award } from 'lucide-react';
 import FloatingBits from './FloatingBits';
@@ -7,19 +7,41 @@ import Mascot3D from './Mascot3D';
 const Hero: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
+  // Check if device is mobile to disable mouse tracking
+  const isMobile = useMemo(() => {
+    return window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }, []);
+
   useEffect(() => {
+    // Don't track mouse on mobile devices for better performance
+    if (isMobile) return;
+
+    let animationFrame: number;
+    
     const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      setMousePosition({
-        x: (clientX / innerWidth - 0.5) * 20,
-        y: (clientY / innerHeight - 0.5) * 20,
+      // Throttle mouse move events using requestAnimationFrame
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+      
+      animationFrame = requestAnimationFrame(() => {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        setMousePosition({
+          x: (clientX / innerWidth - 0.5) * 20,
+          y: (clientY / innerHeight - 0.5) * 20,
+        });
       });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [isMobile]);
 
   const floatingBadges = [
     { icon: Award, text: 'A+', color: 'from-green-400 to-emerald-500', position: { top: '20%', right: '15%' } },

@@ -38,15 +38,31 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
   .floating-element,
   .animate-float,
   .animate-float-delayed,
   .animate-pulse-glow {
-    animation: none;
+    animation: none !important;
   }
   
   .transform,
-  .hover\\:scale-105 {
+  .hover\\:scale-105,
+  .hover\\:scale-110 {
     transform: none !important;
+  }
+  
+  .transition-all,
+  .transition-colors,
+  .transition-transform {
+    transition: none !important;
   }
 }

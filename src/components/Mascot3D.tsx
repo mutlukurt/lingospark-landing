@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -24,13 +24,23 @@ const FloatingShape: React.FC<{ position: [number, number, number]; color: strin
 };
 
 const Scene: React.FC = () => {
-  const shapes = useMemo(() => [
-    { position: [-2, 1, -1] as [number, number, number], color: '#5865F2' },
-    { position: [2, -1, -0.5] as [number, number, number], color: '#FFB86B' },
-    { position: [0, 2, -2] as [number, number, number], color: '#10B981' },
-    { position: [-1, -2, -1.5] as [number, number, number], color: '#F59E0B' },
-    { position: [1.5, 0, -1] as [number, number, number], color: '#EF4444' },
-  ], []);
+  // Check if device is mobile/low-end
+  const isMobile = useMemo(() => {
+    return window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }, []);
+
+  const shapes = useMemo(() => {
+    // Reduce shapes on mobile for better performance
+    const allShapes = [
+      { position: [-2, 1, -1] as [number, number, number], color: '#5865F2' },
+      { position: [2, -1, -0.5] as [number, number, number], color: '#FFB86B' },
+      { position: [0, 2, -2] as [number, number, number], color: '#10B981' },
+      { position: [-1, -2, -1.5] as [number, number, number], color: '#F59E0B' },
+      { position: [1.5, 0, -1] as [number, number, number], color: '#EF4444' },
+    ];
+    
+    return isMobile ? allShapes.slice(0, 3) : allShapes;
+  }, [isMobile]);
 
   return (
     <>
@@ -50,20 +60,37 @@ const Scene: React.FC = () => {
 };
 
 const Mascot3D: React.FC = () => {
+  // Check if user prefers reduced motion or device is mobile
+  const shouldRender3D = useMemo(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Don't render 3D on mobile or if user prefers reduced motion
+    return !prefersReducedMotion && !isMobile;
+  }, []);
+
+  if (!shouldRender3D) {
+    return null;
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-none">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         style={{ background: 'transparent' }}
+        performance={{ min: 0.5 }}
+        dpr={[1, 2]}
       >
-        <Scene />
-        <OrbitControls 
-          enableZoom={false} 
-          enablePan={false} 
-          enableRotate={false}
-          autoRotate
-          autoRotateSpeed={0.5}
-        />
+        <Suspense fallback={null}>
+          <Scene />
+          <OrbitControls 
+            enableZoom={false} 
+            enablePan={false} 
+            enableRotate={false}
+            autoRotate
+            autoRotateSpeed={0.3}
+          />
+        </Suspense>
       </Canvas>
     </div>
   );
